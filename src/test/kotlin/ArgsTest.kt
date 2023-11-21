@@ -37,8 +37,8 @@ class ArgsTest {
             Args("*", arrayOf())
             fail()
         } catch (e: ArgsException) {
-            assertEquals(ErrorCode.INVALID_ARGUMENT_NAME, e.errorCode);
-            assertEquals('*', e.errorArgumentId);
+            assertEquals(ErrorCode.INVALID_ARGUMENT_NAME, e.errorCode)
+            assertEquals('*', e.errorArgumentId)
         }
     }
 
