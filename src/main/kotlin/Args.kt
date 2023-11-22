@@ -1,5 +1,5 @@
 class Args(schema: String, args: Array<String>) {
-    private val marshallers: MutableMap<Char, ArgumentMarshaller> = mutableMapOf()
+    val marshallers: MutableMap<Char, ArgumentMarshaller> = mutableMapOf()
     private val argsFound: MutableSet<Char> = mutableSetOf()
 
     private lateinit var currentArgument: ListIterator<String>
@@ -28,7 +28,6 @@ class Args(schema: String, args: Array<String>) {
                 "*" -> StringArgumentMarshaller()
                 "#" -> IntegerArgumentMarshaller()
                 "##" -> DoubleArgumentMarshaller()
-//                "[*]" -> StringArrayArgumentMarshaller()
                 else -> throw ArgsException(ErrorCode.INVALID_ARGUMENT_FORMAT, elementId, elementTail)
             }
         }
@@ -73,16 +72,10 @@ class Args(schema: String, args: Array<String>) {
 
     fun has(arg: Char) = argsFound.contains(arg)
 
-    fun getBoolean(arg: Char) = marshallers[arg]?.let {
-        BooleanArgumentMarshaller.getValue(it)
-    }
-
-    fun getInt(arg: Char) = marshallers[arg]?.let {
-        IntegerArgumentMarshaller.getValue(it)
-    }
-
-    fun getDouble(arg:Char) = marshallers[arg]?.let {
-        DoubleArgumentMarshaller.getValue(it)
+    inline fun <reified T> get(arg: Char): T {
+        return marshallers[arg]?.let {
+            it.value as T
+        } ?: throw ArgsException(ErrorCode.UNEXPECTED_ARGUMENT)
     }
 
     fun cardinality() = argsFound.size

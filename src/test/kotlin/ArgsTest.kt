@@ -57,7 +57,7 @@ class ArgsTest {
     fun testSimpleBooleanPresent() {
         val args = Args("x", arrayOf("-x"))
         assertEquals(1, args.cardinality())
-        assertEquals(true, args.getBoolean('x'))
+        assertEquals(true, args.get<Boolean>('x'))
     }
 
     @Test
@@ -80,7 +80,7 @@ class ArgsTest {
         val args = Args("x#", arrayOf("-x", "42"))
         assertEquals(1, args.cardinality())
         assert(args.has('x'))
-        assertEquals(42, args.getInt('x'))
+        assertEquals(42, args.get<Int>('x'))
     }
 
     @Test
@@ -111,7 +111,7 @@ class ArgsTest {
         val args = Args("x##", arrayOf("-x", "42.4"))
         assertEquals(1, args.cardinality())
         assert(args.has('x'))
-        assertEquals(42.4, args.getDouble('x'))
+        assertEquals(42.4, args.get<Double>('x'))
     }
 
     @Test
