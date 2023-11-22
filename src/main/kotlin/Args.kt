@@ -1,3 +1,9 @@
+private val tailMarshaller = mapOf(
+    "*" to StringArgumentMarshaller(),
+    "#" to IntegerArgumentMarshaller(),
+    "##" to DoubleArgumentMarshaller(),
+)
+
 class Args(schema: String, args: Array<String>) {
     val marshallers: MutableMap<Char, ArgumentMarshaller> = mutableMapOf()
 
@@ -23,12 +29,11 @@ class Args(schema: String, args: Array<String>) {
         val marshaller = if (elementTail.isEmpty()) {
             BooleanArgumentMarshaller()
         } else {
-            when (elementTail) {
-                "*" -> StringArgumentMarshaller()
-                "#" -> IntegerArgumentMarshaller()
-                "##" -> DoubleArgumentMarshaller()
-                else -> throw ArgsException(ErrorCode.INVALID_ARGUMENT_FORMAT, elementId, elementTail)
-            }
+            tailMarshaller.get(elementTail) ?: throw ArgsException(
+                ErrorCode.INVALID_ARGUMENT_FORMAT,
+                elementId,
+                elementTail
+            )
         }
         marshallers[elementId] = marshaller
     }
