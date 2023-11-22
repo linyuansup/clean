@@ -100,7 +100,7 @@ class ArgsTest {
         try {
             Args("x#", arrayOf("-x"))
             fail()
-        } catch (e:ArgsException) {
+        } catch (e: ArgsException) {
             assertEquals(ErrorCode.MISSING_INTEGER, e.errorCode)
             assertEquals('x', e.errorArgumentId)
         }
@@ -131,8 +131,27 @@ class ArgsTest {
         try {
             Args("x##", arrayOf("-x"))
             fail()
-        } catch (e:ArgsException) {
+        } catch (e: ArgsException) {
             assertEquals(ErrorCode.MISSING_DOUBLE, e.errorCode)
+            assertEquals('x', e.errorArgumentId)
+        }
+    }
+
+    @Test
+    fun testSimpleStringArrayPresent() {
+        val args = Args("x*[]", arrayOf("-x", "[\"litian\", \"yang\"]"))
+        assertEquals(1, args.cardinality())
+        assert(args.has('x'))
+        assertEquals(listOf("litian", "yang"), args.get<List<String>>('x'))
+    }
+
+    @Test
+    fun testMissingStringArray() {
+        try {
+            Args("x*[]", arrayOf("-x"))
+            fail()
+        } catch (e: ArgsException) {
+            assertEquals(ErrorCode.MISSING_STRING, e.errorCode)
             assertEquals('x', e.errorArgumentId)
         }
     }
