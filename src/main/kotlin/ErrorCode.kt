@@ -1,8 +1,4 @@
 enum class ErrorCode(val message: (errorArgumentId: Char, errorParameter: String) -> String) {
-    OK({ _, _ ->
-        "TILT: Should not get here."
-    }),
-
     INVALID_ARGUMENT_FORMAT({ errorArgumentId, _ ->
         String.format(
             "Invalid argument format for -%c.",
