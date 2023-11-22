@@ -25,7 +25,9 @@ class Args(schema: String, args: Array<String>) {
     private fun parseSchemaElement(element: String) {
         val elementId = element.elementAt(0)
         val elementTail = element.substring(1)
-        validateSchemaElementId(elementId)
+        if (validateSchemaElementId(elementId)) {
+            throw ArgsException(ErrorCode.INVALID_ARGUMENT_NAME, elementId)
+        }
         val marshaller = if (elementTail.isEmpty()) {
             BooleanArgumentMarshaller()
         } else {
@@ -38,11 +40,7 @@ class Args(schema: String, args: Array<String>) {
         marshallers[elementId] = marshaller
     }
 
-    private fun validateSchemaElementId(elementId: Char) {
-        if (!Character.isLetter(elementId)) {
-            throw ArgsException(ErrorCode.INVALID_ARGUMENT_NAME, elementId)
-        }
-    }
+    private fun validateSchemaElementId(elementId: Char) = !Character.isLetter(elementId)
 
     private fun parseArgumentStrings(argsList: List<String>) {
         currentArgument = argsList.listIterator()
