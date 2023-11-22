@@ -22,16 +22,11 @@ class Args(schema: String, args: Array<String>) {
         if (validateSchemaElementId(elementId)) {
             throw ArgsException(ErrorCode.INVALID_ARGUMENT_NAME, elementId)
         }
-        val marshaller = if (elementTail.isEmpty()) {
-            BooleanArgumentMarshaller()
-        } else {
-            tailMarshaller.get(elementTail) ?: throw ArgsException(
-                ErrorCode.INVALID_ARGUMENT_FORMAT,
-                elementId,
-                elementTail
-            )
-        }
-        marshallers[elementId] = marshaller
+        marshallers[elementId] = tailMarshaller.get(elementTail) ?: throw ArgsException(
+            ErrorCode.INVALID_ARGUMENT_FORMAT,
+            elementId,
+            elementTail
+        )
     }
 
     private fun validateSchemaElementId(elementId: Char) = !Character.isLetter(elementId)

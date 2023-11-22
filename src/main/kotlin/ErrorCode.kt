@@ -58,11 +58,4 @@ enum class ErrorCode(val message: (errorArgumentId: Char, errorParameter: String
             errorArgumentId
         )
     }),
-
-    INVALID_STRING_ARRAY({ errorArgumentId, errorParameter ->
-        String.format(
-            "Argument -%c expects an string array but was %s.",
-            errorArgumentId, errorParameter
-        )
-    }),
 }

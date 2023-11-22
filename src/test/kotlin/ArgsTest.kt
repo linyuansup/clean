@@ -151,7 +151,7 @@ class ArgsTest {
             Args("x*[]", arrayOf("-x"))
             fail()
         } catch (e: ArgsException) {
-            assertEquals(ErrorCode.MISSING_STRING, e.errorCode)
+            assertEquals(ErrorCode.MISSING_STRING_ARRAY, e.errorCode)
             assertEquals('x', e.errorArgumentId)
         }
     }

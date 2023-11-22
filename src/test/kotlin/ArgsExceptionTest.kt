@@ -38,4 +38,9 @@ class ArgsExceptionTest {
         assertEquals("Could not find double parameter for -x.", e.errorMessage())
     }
 
+    @Test
+    fun testMissingStringArray() {
+        val e = ArgsException(ErrorCode.MISSING_STRING_ARRAY, 'x')
+        assertEquals("Could not find string array parameter for -x.", e.errorMessage())
+    }
 }

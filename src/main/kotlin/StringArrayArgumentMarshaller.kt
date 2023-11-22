@@ -9,7 +9,7 @@ class StringArrayArgumentMarshaller : ArgumentMarshaller {
             val matches = regex.findAll(param)
             value = matches.map { it.groupValues[1] }.toMutableList()
         } catch (e: NoSuchElementException) {
-            throw ArgsException(ErrorCode.MISSING_STRING)
+            throw ArgsException(ErrorCode.MISSING_STRING_ARRAY)
         }
     }
 
