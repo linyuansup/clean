@@ -1,6 +1,5 @@
 class Args(schema: String, args: Array<String>) {
     val marshallers: MutableMap<Char, ArgumentMarshaller> = mutableMapOf()
-    private val argsFound: MutableSet<Char> = mutableSetOf()
 
     private lateinit var currentArgument: ListIterator<String>
 
@@ -60,7 +59,6 @@ class Args(schema: String, args: Array<String>) {
 
     private fun parseArgumentCharacter(argChar: Char) {
         marshallers[argChar]?.let { marshaller ->
-            argsFound.add(argChar)
             try {
                 marshaller.set(currentArgument)
             } catch (e: ArgsException) {
@@ -70,7 +68,7 @@ class Args(schema: String, args: Array<String>) {
         } ?: throw ArgsException(ErrorCode.UNEXPECTED_ARGUMENT, argChar)
     }
 
-    fun has(arg: Char) = argsFound.contains(arg)
+    fun has(arg: Char) = marshallers.contains(arg)
 
     inline fun <reified T> get(arg: Char): T {
         return marshallers[arg]?.let {
@@ -78,5 +76,5 @@ class Args(schema: String, args: Array<String>) {
         } ?: throw ArgsException(ErrorCode.UNEXPECTED_ARGUMENT)
     }
 
-    fun cardinality() = argsFound.size
+    fun cardinality() = marshallers.size
 }
