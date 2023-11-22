@@ -1,9 +1,3 @@
-private val tailMarshaller = mapOf(
-    "*" to StringArgumentMarshaller(),
-    "#" to IntegerArgumentMarshaller(),
-    "##" to DoubleArgumentMarshaller(),
-)
-
 class Args(schema: String, args: Array<String>) {
     val marshallers: MutableMap<Char, ArgumentMarshaller> = mutableMapOf()
 
